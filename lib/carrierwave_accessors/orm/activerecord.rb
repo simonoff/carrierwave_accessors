@@ -25,7 +25,7 @@ module CarrierWave
             def write_uploader(column, identifier)
               ar_store = self.class.stored_attributes.find{|store, attributes| attributes.include?(column)}.try(:first)
               if ar_store
-                self.send(ar_store)[column.to_s] = identifier  
+                self.__send__(ar_store)[column.to_s] = identifier
               else
                 write_attribute(column, identifier)
               end
@@ -34,7 +34,7 @@ module CarrierWave
             def read_uploader(column)
               ar_store = self.class.stored_attributes.find{|store, attributes| attributes.include?(column)}.try(:first)
               if ar_store
-                self.send(ar_store)[column.to_s]
+                self.__send__(ar_store).try(:[], column.to_s)
               else
                 read_attribute(column)
               end
